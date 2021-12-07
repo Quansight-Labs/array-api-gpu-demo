@@ -10,6 +10,7 @@ dependencies:
   - scipy
   - matplotlib
   - scikit-image
+  - jupyterlab
 
   - pip:
       - git+git://github.com/cupy/cupy.git@master
