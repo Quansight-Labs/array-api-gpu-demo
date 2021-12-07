@@ -13,7 +13,7 @@ dependencies:
   - jupyterlab
 
   - pip:
-      - git+git://github.com/cupy/cupy.git@master
+      #- git+git://github.com/cupy/cupy.git@master
       - git+git://github.com/numpy/numpy.git@main
       - git+git://github.com/aktech/scikit-learn.git@amd-demo
 
