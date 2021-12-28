@@ -1,0 +1,40 @@
+name: amd-cucim
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - scikit-image=0.18.1
+  - openslide
+  - zlib
+  - jpeg
+  - jbig
+  - xz
+  - zstd
+  - libwebp-base  # [linux or osx]
+  - numpy
+  - xorg-libxcb
+  - scipy
+  - python=3.8
+  - cudatoolkit=11.2.0
+  - cudatoolkit-dev=11.2
+  - cxx-compiler
+  - c-compiler
+  - cmake
+  - automake
+  - make
+  - click
+  - yasm # [x86_64]
+  - isort
+  - flake8
+  # amd-test requirements
+  - jupyterlab
+  - matplotlib
+  - cupy=10.0.0
+  # scikit-learn requirements
+  - cython
+  - compilers
+  - openblas
+  - lapack
+  - llvm-openmp
+  - threadpoolctl
+  - joblib
