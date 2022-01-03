@@ -1,4 +1,4 @@
-name: amd-cucim
+name: amd-cucim-new
 channels:
   - conda-forge
 dependencies:
@@ -13,7 +13,6 @@ dependencies:
   - libwebp-base  # [linux or osx]
   - numpy
   - xorg-libxcb
-  - scipy
   - python=3.8
   - cudatoolkit=11.2.0
   - cudatoolkit-dev=11.2
@@ -38,3 +37,12 @@ dependencies:
   - llvm-openmp
   - threadpoolctl
   - joblib
+  # scipy requirements
+  - libblas=*=*openblas
+  - pybind11
+  - pythran>=0.9.12
+  - pytest
+  - conda-build
+  # numpy requirements
+  - nomkl
+  - setuptools=59.2.0
