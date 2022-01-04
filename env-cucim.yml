@@ -11,8 +11,8 @@ dependencies:
   - xz
   - zstd
   - libwebp-base  # [linux or osx]
-  - numpy
-  - xorg-libxcb
+  - numpy=1.22.0
+  # - xorg-libxcb
   - python=3.8
   - cudatoolkit=11.2.0
   - cudatoolkit-dev=11.2
@@ -42,7 +42,14 @@ dependencies:
   - pybind11
   - pythran>=0.9.12
   - pytest
+  - pytest-cov
+  - pytest-xdist
+  - asv
   - conda-build
+  - mypy
+  - typing_extensions
+  - mpmath
+  - gmpy2=2.1.0rc1
   # numpy requirements
   - nomkl
   - setuptools=59.2.0
