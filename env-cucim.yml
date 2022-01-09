@@ -16,8 +16,8 @@ dependencies:
   - python=3.8
   - cudatoolkit=11.2.0
   - cudatoolkit-dev=11.2
-  - cxx-compiler
-  - c-compiler
+    #- cxx-compiler
+    #- c-compiler
   - cmake
   - automake
   - make
@@ -50,6 +50,8 @@ dependencies:
   - typing_extensions
   - mpmath
   - gmpy2=2.1.0rc1
+  - scipy
+  - scikit-learn
   # numpy requirements
   - nomkl
   - setuptools=59.2.0
