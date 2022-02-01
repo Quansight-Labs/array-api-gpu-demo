@@ -14,6 +14,7 @@ jobs:
         env:
           CONDA: /work/aktech/miniconda3
           CONDA_ENVS_PATH: /work/aktech/miniconda3/envs
+          CONDA_ENVS_DIR: /work/aktech/miniconda3/envs
         with:
           activate-environment: amd-github-env
           environment-file: environment.yml
