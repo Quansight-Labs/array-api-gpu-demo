@@ -10,11 +10,6 @@ jobs:
         shell: bash -l {0}
     steps:
       - uses: actions/checkout@v2
-
-      - name: Nvidia-SMI
-        run: |
-          nvidia-smi
-
       - uses: conda-incubator/setup-miniconda@v2
         env:
           CONDA: /work/aktech/miniconda3
@@ -28,3 +23,7 @@ jobs:
         run: |
           conda info
           conda list
+
+      - name: Nvidia-SMI
+        run: |
+          nvidia-smi
