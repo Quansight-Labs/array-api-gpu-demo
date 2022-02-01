@@ -13,11 +13,11 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         env:
           CONDA: /work/aktech/miniconda3
+          CONDA_ENVS_PATH: /work/aktech/miniconda3/envs
         with:
           activate-environment: amd-github-env
           environment-file: environment.yml
           auto-activate-base: false
-          condarc-file: /work/aktech/.condarc
 
       - name: conda info
         run: |
