@@ -16,6 +16,8 @@ jobs:
           nvidia-smi
 
       - uses: conda-incubator/setup-miniconda@v2
+        env:
+          CONDA: /work/aktech/miniconda3
         with:
           activate-environment: amd-github-env
           environment-file: environment.yml
