@@ -22,6 +22,7 @@ jobs:
           activate-environment: amd-github-env
           environment-file: environment.yml
           auto-activate-base: false
+          condarc-file: /work/aktech/.condarc
 
       - name: conda info
         run: |
