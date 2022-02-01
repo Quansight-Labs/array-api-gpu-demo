@@ -13,7 +13,6 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         env:
           CONDA: /work/aktech/miniconda3
-          CONDA_ENVS_PATH: /work/aktech/miniconda3/envs
           CONDA_ENVS_DIRS: /work/aktech/miniconda3/envs
           CONDA_PKGS_DIRS: /work/aktech/conda_pkgs_dir
         with:
