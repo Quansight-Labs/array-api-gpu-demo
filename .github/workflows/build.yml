@@ -8,9 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2
-      - name: Build docker image
-        run: |
-          docker build -t amd .
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
