@@ -48,3 +48,5 @@ RUN pip uninstall scipy -y
 RUN cd /amd-demo/packages/scipy && python dev.py --build-only
 ENV PYTHONPATH=$PYTHONPATH:/amd-demo/packages/scipy/installdir/lib/python3.8/site-packages
 RUN cd /amd-demo/packages/scikit-image && python setup.py develop --no-deps
+
+RUN echo "conda activate docker-amd" >> ~/.bashrc
