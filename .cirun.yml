@@ -2,5 +2,6 @@ runners:
   - name: aws-gpu-runner
     cloud: aws
     instance_type: g4dn.xlarge
-    machine_image: ami-00ac0c28c01352e53
+    # Custom AMI with 60 GB Disk Space
+    machine_image: ami-02711eb067204d5a7
     workflow: .github/workflows/build.yml
