@@ -14,6 +14,9 @@ RUN mkdir /amd-demo/packages/ && cd /amd-demo/packages && \
 	git clone https://github.com/aktech/cupy.git --branch amd-demo --recursive
 
 COPY environment.yml /amd-demo/environment.yml
+COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
+COPY plot_coin_segmentation.py /amd-demo/plot_coin_segmentation.py
+
 ENV CONDA_ENV_NAME=docker-amd
 RUN conda info && \
     conda install mamba -n base -c conda-forge && \
