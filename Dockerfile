@@ -46,10 +46,7 @@ RUN cd /amd-demo/packages/cupy && python setup.py develop && \
     python -m pip uninstall scipy -y && \
     cd /amd-demo/packages/scipy && python dev.py --build-only && \
     conda clean --all && \
-    rm -rf /opt/conda/pkgs && \
-    find /opt/conda/ -type f,l -name '*.a' -delete \
-    find /opt/conda/ -type f,l -name '*.pyc' -delete \
-    find /opt/conda/ -type f,l -name '*.js.map' -delete
+    rm -rf /opt/conda/pkgs
 
 ENV PYTHONPATH=$PYTHONPATH:/amd-demo/packages/scipy/installdir/lib/python3.8/site-packages
 RUN cd /amd-demo/packages/scikit-image && python setup.py develop --no-deps && \
