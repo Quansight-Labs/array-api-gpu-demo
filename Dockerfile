@@ -2,7 +2,8 @@ FROM gpuci/miniconda-cuda:11.2-devel-ubuntu20.04
 RUN apt-get update -y \
     && apt-get install -y \
     libxml2 \
-    libxml2-dev
+    libxml2-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 CMD nvidia-smi
 RUN ls /usr/local/
@@ -33,17 +34,22 @@ ENV PATH=$PATH:$CUDA_HOME/bin
 ENV CUPY_NUM_BUILD_JOBS=55
 ENV CUPY_NVCC_GENERATE_CODE=current
 
-RUN conda install -c conda-forge sysroot_linux-64=2.17 --yes
+RUN mamba install -c conda-forge sysroot_linux-64=2.17 --yes
 
 ENV CXXFLAGS="$CXXFLAGS -I$CUDA_HOME/include"
 ENV CFLAGS="$CFLAGS -I$CUDA_HOME/include"
 ENV LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${CUDA_HOME}/lib64 -L${CUDA_HOME}/lib64 -L$CUDA_HOME/lib64/stubs"
 
 RUN cd /amd-demo/packages/cupy && python setup.py develop && \
-    pip install scipy && \
+    python -m pip install scipy && \
     cd /amd-demo/packages/scikit-learn && python setup.py develop --no-deps && \
-    pip uninstall scipy -y && \
-    cd /amd-demo/packages/scipy && python dev.py --build-only
+    python -m pip uninstall scipy -y && \
+    cd /amd-demo/packages/scipy && python dev.py --build-only && \
+    conda clean --all && \
+    rm -rf /opt/conda/pkgs && \
+    find /opt/conda/ -type f,l -name '*.a' -delete \
+    find /opt/conda/ -type f,l -name '*.pyc' -delete \
+    find /opt/conda/ -type f,l -name '*.js.map' -delete
 
 ENV PYTHONPATH=$PYTHONPATH:/amd-demo/packages/scipy/installdir/lib/python3.8/site-packages
 RUN cd /amd-demo/packages/scikit-image && python setup.py develop --no-deps && \
