@@ -35,7 +35,11 @@ jobs:
 
       - name: Check installed packages version
         run: |
+          echo "scikit-learn version"
           docker run ghcr.io/quansight-labs/amd-demo:latest bash -c 'conda run -n docker-amd python -c "import sklearn; print(sklearn.__version__)"'
+          echo "scipy version"
           docker run ghcr.io/quansight-labs/amd-demo:latest bash -c 'conda run -n docker-amd python -c "import scipy; print(scipy.__version__)"'
-          docker run ghcr.io/quansight-labs/amd-demo:latest bash -c 'conda run -n docker-amd python -c "import cupy; print(cupy.__version__)"'
+          echo "skimage version"
           docker run ghcr.io/quansight-labs/amd-demo:latest bash -c 'conda run -n docker-amd python -c "import skimage; print(skimage.__version__)"'
+          echo "cupy version"
+          docker run --gpus all ghcr.io/quansight-labs/amd-demo:latest bash -c 'conda run -n docker-amd python -c "import cupy; print(cupy.__version__)"'
