@@ -33,6 +33,10 @@ jobs:
             ghcr.io/quansight-labs/amd-demo:latest
           push: ${{ github.event_name != 'pull_request' }}
 
+      - name: List docker images
+        run: |
+          docker images
+
       - name: Check installed packages version
         run: |
           echo "scikit-learn version"
