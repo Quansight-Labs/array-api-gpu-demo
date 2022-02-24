@@ -16,7 +16,6 @@ RUN mkdir /amd-demo/packages/ && cd /amd-demo/packages && \
 
 COPY environment.yml /amd-demo/environment.yml
 COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
-COPY plot_coin_segmentation.py /amd-demo/plot_coin_segmentation.py
 
 ENV CONDA_ENV_NAME=docker-amd
 RUN conda info && \
@@ -46,6 +45,7 @@ RUN cd /amd-demo/packages/cupy && python setup.py develop && \
     python -m pip uninstall scipy -y && \
     cd /amd-demo/packages/scipy && python dev.py --build-only && \
     conda clean --all && \
+    rm -rf /opt/conda/envs/$CONDA_ENV_NAME/pkgs/ && \
     rm -rf /opt/conda/pkgs
 
 ENV PYTHONPATH=$PYTHONPATH:/amd-demo/packages/scipy/installdir/lib/python3.8/site-packages
