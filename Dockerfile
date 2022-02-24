@@ -20,7 +20,13 @@ COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
 ENV CONDA_ENV_NAME=docker-amd
 RUN conda info && \
     conda install mamba -n base -c conda-forge && \
-    mamba env create -f /amd-demo/environment.yml
+    mamba env create -f /amd-demo/environment.yml && \
+    conda clean --all && \
+    rm -rf /opt/conda/envs/$CONDA_ENV_NAME/pkgs/ && \
+    rm -rf /opt/conda/pkgs && \
+    find /opt/conda/ -follow -type f -name '*.a' -delete && \
+    find /opt/conda/ -follow -type f -name '*.pyc' -delete && \
+    find /opt/conda/ -follow -type f -name '*.js.map' -delete
 
 SHELL ["conda", "run", "-n", "docker-amd", "/bin/bash", "-c"]
 RUN conda info
