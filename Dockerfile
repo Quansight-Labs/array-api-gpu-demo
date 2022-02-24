@@ -23,10 +23,7 @@ RUN conda info && \
     mamba env create -f /amd-demo/environment.yml && \
     conda clean --all && \
     rm -rf /opt/conda/envs/$CONDA_ENV_NAME/pkgs/ && \
-    rm -rf /opt/conda/pkgs && \
-    find /opt/conda/ -follow -type f -name '*.a' -delete && \
-    find /opt/conda/ -follow -type f -name '*.pyc' -delete && \
-    find /opt/conda/ -follow -type f -name '*.js.map' -delete
+    rm -rf /opt/conda/pkgs
 
 SHELL ["conda", "run", "-n", "docker-amd", "/bin/bash", "-c"]
 RUN conda info
