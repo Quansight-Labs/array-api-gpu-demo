@@ -7,10 +7,10 @@ RUN apt-get update -y \
 
 WORKDIR /amd-demo
 RUN mkdir /amd-demo/packages/ && cd /amd-demo/packages && \
-	git clone https://github.com/aktech/scipy.git --branch amd-demo --recursive && \
-	git clone https://github.com/aktech/scikit-learn.git --branch amd-demo  --recursive && \
-	git clone https://github.com/aktech/scikit-image.git --branch amd-demo  --recursive && \
-	git clone https://github.com/aktech/cupy.git --branch amd-demo --recursive
+    git clone https://github.com/aktech/scipy.git --branch amd-demo --recursive && \
+    git clone https://github.com/aktech/scikit-learn.git --branch amd-demo  --recursive && \
+    git clone https://github.com/aktech/scikit-image.git --branch amd-demo  --recursive && \
+    git clone https://github.com/aktech/cupy.git --branch amd-demo --recursive
 
 COPY environment.yml /amd-demo/environment.yml
 COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
