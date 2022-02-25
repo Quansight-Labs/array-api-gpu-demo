@@ -5,8 +5,6 @@ RUN apt-get update -y \
     libxml2-dev && \
     rm -rf /var/lib/apt/lists/*
 
-CMD nvidia-smi
-RUN ls /usr/local/
 WORKDIR /amd-demo
 RUN mkdir /amd-demo/packages/ && cd /amd-demo/packages && \
 	git clone https://github.com/aktech/scipy.git --branch amd-demo --recursive && \
@@ -18,16 +16,6 @@ COPY environment.yml /amd-demo/environment.yml
 COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
 
 ENV CONDA_ENV_NAME=docker-amd
-RUN conda info && \
-    conda install mamba -n base -c conda-forge && \
-    mamba env create -f /amd-demo/environment.yml && \
-    conda clean --all && \
-    rm -rf /opt/conda/envs/$CONDA_ENV_NAME/pkgs/ && \
-    rm -rf /opt/conda/pkgs
-
-SHELL ["conda", "run", "-n", "docker-amd", "/bin/bash", "-c"]
-RUN conda info
-
 ENV CUDA_VERSION=11.2
 ENV CUDA_PATH=/usr/local/cuda-$CUDA_VERSION
 ENV CUDA_HOME=$CUDA_PATH
@@ -36,7 +24,16 @@ ENV PATH=$PATH:$CUDA_HOME/bin
 ENV CUPY_NUM_BUILD_JOBS=55
 ENV CUPY_NVCC_GENERATE_CODE=current
 
-RUN mamba install -c conda-forge sysroot_linux-64=2.17 --yes
+RUN conda info && \
+    conda install mamba -n base -c conda-forge && \
+    mamba env create -f /amd-demo/environment.yml && \
+    mamba install -c conda-forge sysroot_linux-64=2.17 --yes && \
+    conda clean --all && \
+    rm -rf /opt/conda/envs/$CONDA_ENV_NAME/pkgs/ && \
+    rm -rf /opt/conda/pkgs
+
+SHELL ["conda", "run", "-n", "docker-amd", "/bin/bash", "-c"]
+RUN conda info
 
 ENV CXXFLAGS="$CXXFLAGS -I$CUDA_HOME/include"
 ENV CFLAGS="$CFLAGS -I$CUDA_HOME/include"
