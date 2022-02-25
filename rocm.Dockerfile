@@ -11,8 +11,6 @@ RUN sudo apt update && \
     sudo apt clean && \
     sudo rm -rf /var/lib/apt/lists/*
 
-#RUN sudo mkdir -p /opt/conda
-
 ENV ROCM_HOME=/opt/rocm-4.3.1
 ENV LD_LIBRARY_PATH=$ROCM_HOME/lib
 ENV CUPY_INSTALL_USE_HIP=1
@@ -37,7 +35,8 @@ RUN mkdir /amd-demo/packages/ && cd /amd-demo/packages && \
 ENV CONDA_ENV_NAME=docker-amd
 ENV CUPY_NUM_BUILD_JOBS=55
 
-COPY environment.yml /amd-demo/environment.yml
+COPY environment_rocm.yml /amd-demo/environment.yml
+COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
 
 RUN conda info && \
     conda install mamba -n base -c conda-forge && \
