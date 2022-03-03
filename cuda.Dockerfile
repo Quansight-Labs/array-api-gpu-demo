@@ -14,6 +14,8 @@ RUN mkdir /amd-demo/packages/ && cd /amd-demo/packages && \
 
 COPY environment.yml /amd-demo/environment.yml
 COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
+COPY segmentation_performance.py /amd-demo/segmentation_performance.py
+
 
 ENV CONDA_ENV_NAME=docker-amd
 ENV CUDA_VERSION=11.2

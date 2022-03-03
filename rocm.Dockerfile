@@ -37,6 +37,7 @@ ENV CUPY_NUM_BUILD_JOBS=55
 
 COPY environment_rocm.yml /amd-demo/environment.yml
 COPY plot_coin_segmentation.ipynb /amd-demo/plot_coin_segmentation.ipynb
+COPY segmentation_performance.py /amd-demo/segmentation_performance.py
 
 RUN conda info && \
     conda install mamba -n base -c conda-forge && \
