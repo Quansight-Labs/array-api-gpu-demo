@@ -144,7 +144,7 @@ def plot_performance(cupy_times, numpy_times):
     plt.xticks(xi, RESIZE_PROPORTIONS)
 
     plt.legend()
-    plt.ylabel('Time Taken')
+    plt.ylabel('Time Taken (sec)')
     plt.xlabel('Image Proportion')
     plt.savefig('numpy_vs_cupy.png')
 
