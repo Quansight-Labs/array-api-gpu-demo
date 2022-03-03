@@ -40,3 +40,22 @@ jupyter lab --ip=0.0.0.0 --port=8788 --allow-root
 
 
 Now run the `plot_coin_segmentation.ipynb` notebook.
+
+
+### Running Segmentation Performance script
+
+Get into the docker container for either of the above mentioned GPU platform
+and run the following script:
+
+```
+python segmentation_performance.py
+```
+
+
+This will run the segmentation for various proportions of the greek coins
+image for cupy and numpy array, i.e. on CPU and GPU.
+
+This will also create a plot of the performance comparison between numpy and cupy,
+which would look something like:
+
+![cupy vs numpy](numpy_vs_cupy_comparison.png)
