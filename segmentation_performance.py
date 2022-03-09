@@ -153,4 +153,6 @@ def plot_performance(cupy_times, numpy_times):
 
 if __name__ == '__main__':
     print("Running segmentation performance")
+    t1 = time.time()
     run_segmentation_performance()
+    print(f"Total Time Taken: {time.time() - t1} sec")
