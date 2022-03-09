@@ -116,10 +116,12 @@ def segmentation(xp, coins, gaussian_filter, return_as, show_plot=False, resize_
 def run_segmentation_performance():
     numpy_times = []
     cupy_times = []
+    coins_npx = npx.asarray(coins())
+    coins_cpx = cpx.asarray(coins())
     for r_proportion in tqdm.tqdm(RESIZE_PROPORTIONS):
         numpy_times.append(segmentation(
             xp=npx,
-            coins=npx.asarray(coins()),
+            coins=coins_npx,
             gaussian_filter=scipy_gaussian_filter,
             return_as=scipy_sparse.coo_matrix,
             resize_proportion=r_proportion
@@ -127,7 +129,7 @@ def run_segmentation_performance():
 
         cupy_times.append(segmentation(
             xp=cpx,
-            coins=cpx.asarray(coins()),
+            coins=coins_cpx,
             gaussian_filter=cupy_gaussian_filter,
             return_as=cupy_sparse.coo_matrix,
             resize_proportion=r_proportion
