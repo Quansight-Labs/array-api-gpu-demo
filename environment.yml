@@ -1,4 +1,4 @@
-name: docker-amd
+name: demo
 channels:
   - conda-forge
 dependencies:

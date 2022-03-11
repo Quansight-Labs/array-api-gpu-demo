@@ -17,7 +17,7 @@ echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
 ### On NVIDIA GPU
 
 ```
-docker run --gpus all -it -p 8788:8788 ghcr.io/quansight-labs/amd-demo-cuda:latest bash
+docker run --gpus all -it -p 8788:8788 ghcr.io/quansight-labs/array-api-gpu-demo-cuda:latest bash
 ```
 
 and then run jupyterlab inside the container:
@@ -29,7 +29,7 @@ jupyter lab --ip=0.0.0.0 --port=8788 --allow-root
 ### On AMD GPU
 
 ```
-docker run -it --device=/dev/kfd --device=/dev/dri --security-opt seccomp=unconfined --group-add video ghcr.io/quansight-labs/amd-demo-amd:latest bash
+docker run -it --device=/dev/kfd --device=/dev/dri --security-opt seccomp=unconfined --group-add video ghcr.io/quansight-labs/array-api-gpu-demo-rocm:latest bash
 ```
 
 and then run jupyterlab inside the container:
