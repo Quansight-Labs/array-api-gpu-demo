@@ -95,6 +95,7 @@ def segmentation(xp, coins, gaussian_filter, return_as, show_plot=False, resize_
     rescaled_coins, graph = create_image_graph(
         coins, gaussian_filter, skimage_rescale, return_as=return_as, resize_proportion=resize_proportion
     )
+    image_shape = rescaled_coins.shape
     graph = set_graph_data(xp, graph)
     t0 = time.time()
     labels = spectral_clustering(
@@ -110,44 +111,48 @@ def segmentation(xp, coins, gaussian_filter, return_as, show_plot=False, resize_
         print(title)
         plt.title(title)
         plt.show()
-    return time_taken
+    return time_taken, image_shape
 
 
 def run_segmentation_performance():
     numpy_times = []
     cupy_times = []
+    image_sizes = []
     coins_npx = npx.asarray(coins())
     coins_cpx = cpx.asarray(coins())
     for r_proportion in tqdm.tqdm(RESIZE_PROPORTIONS):
-        numpy_times.append(segmentation(
+        numpy_time, image_size = segmentation(
             xp=npx,
             coins=coins_npx,
             gaussian_filter=scipy_gaussian_filter,
             return_as=scipy_sparse.coo_matrix,
             resize_proportion=r_proportion
-        ))
+        )
+        numpy_times.append(numpy_time)
+        image_sizes.append(str(k))
 
-        cupy_times.append(segmentation(
+        cupy_time, _ = segmentation(
             xp=cpx,
             coins=coins_cpx,
             gaussian_filter=cupy_gaussian_filter,
             return_as=cupy_sparse.coo_matrix,
             resize_proportion=r_proportion
-        ))
-    plot_performance(cupy_times, numpy_times)
+        )
+        cupy_times.append(cupy_time)
+    plot_performance(cupy_times, numpy_times, image_sizes)
 
 
-def plot_performance(cupy_times, numpy_times):
+def plot_performance(cupy_times, numpy_times, image_sizes):
     plt.plot(cupy_times, color="green", label="cupy")
     plt.plot(numpy_times, color="blue", label="numpy")
 
     # x-label
-    xi = list(range(len(RESIZE_PROPORTIONS)))
-    plt.xticks(xi, RESIZE_PROPORTIONS)
+    xi = list(range(len(image_sizes)))
+    plt.xticks(xi, image_sizes)
 
     plt.legend()
     plt.ylabel('Time Taken (sec)')
-    plt.xlabel('Image Proportion')
+    plt.xlabel('Image Dimension')
     plt.savefig('numpy_vs_cupy.png')
 
 
