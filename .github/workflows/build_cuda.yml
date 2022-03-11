@@ -34,7 +34,7 @@ jobs:
           context: "."
           file: "cuda.Dockerfile"
           tags: |
-            {{ env.DOCKER_IMAGE }}
+            ${{ env.DOCKER_IMAGE }}
           push: ${{ github.event_name != 'pull_request' }}
 
       - name: List docker images
