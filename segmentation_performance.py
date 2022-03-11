@@ -129,7 +129,7 @@ def run_segmentation_performance():
             resize_proportion=r_proportion
         )
         numpy_times.append(numpy_time)
-        image_sizes.append(str(k))
+        image_sizes.append(str(image_size))
 
         cupy_time, _ = segmentation(
             xp=cpx,
