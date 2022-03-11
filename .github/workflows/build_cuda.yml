@@ -44,10 +44,10 @@ jobs:
       - name: Check installed packages version
         run: |
           echo "scikit-learn version"
-          docker run $DOCKER_IMAGE bash -c 'conda run -n $CONDA_ENV python -c "import sklearn; print(sklearn.__version__)"'
+          docker run $DOCKER_IMAGE bash -c 'conda run -n ${{ env.CONDA_ENV }} python -c "import sklearn; print(sklearn.__version__)"'
           echo "scipy version"
-          docker run $DOCKER_IMAGE bash -c 'conda run -n $CONDA_ENV python -c "import scipy; print(scipy.__version__)"'
+          docker run $DOCKER_IMAGE bash -c 'conda run -n ${{ env.CONDA_ENV }} python -c "import scipy; print(scipy.__version__)"'
           echo "skimage version"
-          docker run $DOCKER_IMAGE bash -c 'conda run -n $CONDA_ENV python -c "import skimage; print(skimage.__version__)"'
+          docker run $DOCKER_IMAGE bash -c 'conda run -n ${{ env.CONDA_ENV }} python -c "import skimage; print(skimage.__version__)"'
           echo "cupy version"
-          docker run --gpus all $DOCKER_IMAGE bash -c 'conda run -n $CONDA_ENV python -c "import cupy; print(cupy.__version__)"'
+          docker run --gpus all $DOCKER_IMAGE bash -c 'conda run -n ${{ env.CONDA_ENV }} python -c "import cupy; print(cupy.__version__)"'
