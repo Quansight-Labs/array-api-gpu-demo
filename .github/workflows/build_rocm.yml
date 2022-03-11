@@ -2,6 +2,10 @@ name: Build ROCm Environment
 
 on: [push]
 
+env:
+  DOCKER_IMAGE: ghcr.io/quansight-labs/array-api-gpu-demo-rocm:latest
+
+
 jobs:
   build:
     runs-on: "ubuntu-latest"
@@ -24,5 +28,5 @@ jobs:
           context: "."
           file: "rocm.Dockerfile"
           tags: |
-            ghcr.io/quansight-labs/amd-demo-rocm:latest
+            {{ env.DOCKER_IMAGE }}
           push: ${{ github.event_name != 'pull_request' }}
