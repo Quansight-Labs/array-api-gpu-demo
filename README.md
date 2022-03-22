@@ -58,4 +58,8 @@ image for cupy and numpy array, i.e. on CPU and GPU.
 This will also create a plot of the performance comparison between numpy and cupy,
 which would look something like:
 
-![cupy vs numpy](numpy_vs_cupy_comparison.png)
+#### On NVIDIA GPU
+![cupy vs numpy](numpy_vs_cupy_nvidia.png)
+
+#### On AMD GPU
+![cupy vs numpy](numpy_vs_cupy_amd.png)

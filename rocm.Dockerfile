@@ -17,7 +17,7 @@ ENV CUPY_INSTALL_USE_HIP=1
 ENV HCC_AMDGPU_TARGET=gfx906
 
 # Install miniconda
-ENV CONDA_DIR /opt/conda
+ENV CONDA_DIR=/opt/conda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
      sudo /bin/bash ~/miniconda.sh -b -p /opt/conda
 
