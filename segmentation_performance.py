@@ -40,7 +40,7 @@ LABELLING_METHOD = "discretize"
 # installed)
 N_REGIONS = 25
 
-RESIZE_PROPORTIONS = [0.1, 0.2, 0.4, 0.6, 0.8, 1]
+RESIZE_PROPORTIONS = [0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1]
 
 
 def create_image_graph(
@@ -139,7 +139,7 @@ def run_segmentation_performance():
             resize_proportion=r_proportion
         )
         cupy_times.append(cupy_time)
-    plot_performance(cupy_times, numpy_times, image_sizes)
+    plot_performance(cupy_times[1:], numpy_times[1:], image_sizes[1:])
 
 
 def plot_performance(cupy_times, numpy_times, image_sizes):
