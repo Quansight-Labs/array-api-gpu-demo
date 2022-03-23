@@ -1,7 +1,7 @@
 # Author: Gael Varoquaux <gael.varoquaux@normalesup.org>, Brian Cheung
 # Modified by: Amit Kumar <dtu.amit@gmail.com>
 # License: BSD 3 clause
-
+import os
 import time
 
 import tqdm
@@ -153,7 +153,11 @@ def plot_performance(cupy_times, numpy_times, image_sizes):
     plt.legend()
     plt.ylabel('Time Taken (sec)')
     plt.xlabel('Image Dimension')
-    plt.savefig('numpy_vs_cupy.png')
+    artifacts_path = 'artifacts'
+    if not os.path.exists(artifacts_path):
+        os.mkdir(artifacts_path)
+    plot_path = os.path.join(artifacts_path, 'numpy_vs_cupy.png')
+    plt.savefig(plot_path)
 
 
 if __name__ == '__main__':
