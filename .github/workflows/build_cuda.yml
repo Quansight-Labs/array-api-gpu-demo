@@ -54,7 +54,7 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          docker run --gpus all -it -p 8788:8788 -v ${PWD}/artifacts:/demo/artifacts ${{ env.CONDA_ENV }} conda run -n demo python segmentation_performance.py
+          docker run --gpus all -p 8788:8788 -v ${PWD}/artifacts:/demo/artifacts ${{ env.CONDA_ENV }} conda run -n demo python segmentation_performance.py
 
       - name: Save plot image artifact
         uses: actions/upload-artifact@v3
