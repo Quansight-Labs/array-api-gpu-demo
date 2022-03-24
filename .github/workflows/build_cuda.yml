@@ -60,4 +60,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: numpy_vs_cupy.png
-          path: ${PWD}/artifacts/numpy_vs_cupy.png
+          path: artifacts/numpy_vs_cupy.png
