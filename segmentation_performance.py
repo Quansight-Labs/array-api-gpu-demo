@@ -54,14 +54,13 @@ def create_image_graph(
     # Applying a Gaussian filter for smoothing prior to down-scaling
     # reduces aliasing artifacts.
     smoothened_coins = filter(coins, sigma=2)
-    # Taking the old array for cucim as we don't need to change cucim to support Array API
-    # We'll change skimage to support Array API rather.
+    # Taking the old array for cuCIM as we don't need to change cuCIM to support Array API
+    # We'll change skimage to support the Array API rather.
     # smoothened_coins = smoothened_coins._array if hasattr(smoothened_coins, '_array') else smoothened_coins
     rescaled_coins = rescale(smoothened_coins, resize_proportion, mode="reflect", **rescale_params)
 
     # Convert the image into a graph with the value of the gradient on the
     # edges.
-
     graph = image.img_to_graph(rescaled_coins, return_as=return_as)
     return rescaled_coins, graph
 
@@ -69,10 +68,10 @@ def create_image_graph(
 # Take a decreasing function of the gradient: an exponential
 # The smaller beta is, the more independent the segmentation is of the
 # actual image. For beta=1, the segmentation is close to a voronoi
-def set_graph_data(array, graph):
-    graph.data = array.exp(-beta * array.asarray(graph.data) / array.std(array.asarray(graph.data))) + eps
-    graph.row = array.asarray(graph.row)
-    graph.col = array.asarray(graph.col)
+def set_graph_data(xp, graph):
+    graph.data = xp.exp(-beta * xp.asarray(graph.data) / xp.std(xp.asarray(graph.data))) + eps
+    graph.row = xp.asarray(graph.row)
+    graph.col = xp.asarray(graph.col)
     return graph
 
 
@@ -80,11 +79,14 @@ def plot_(rescaled_coins, xp, labels):
     labels = xp.reshape(labels, rescaled_coins.shape)
     plt.figure(figsize=(5, 5))
     if xp.__name__ == 'cupy.array_api':
+        # For plotting with Matplotlib we need a NumPy array
         rescaled_coins = rescaled_coins._array.get()
         labels = labels._array.get()
+
     plt.imshow(rescaled_coins, cmap=plt.cm.gray)
     for l in range(N_REGIONS):
         plt.contour(labels == l, colors=[plt.cm.nipy_spectral(l / float(N_REGIONS))])
+
     plt.xticks(())
     plt.yticks(())
     return plt
@@ -93,7 +95,8 @@ def plot_(rescaled_coins, xp, labels):
 def segmentation(xp, coins, gaussian_filter, return_as, show_plot=False, resize_proportion=0.2):
     print(f"Running segmentation for {xp.__name__.split('.')[0]} for Resize proportion {resize_proportion}")
     rescaled_coins, graph = create_image_graph(
-        coins, gaussian_filter, skimage_rescale, return_as=return_as, resize_proportion=resize_proportion
+        coins, gaussian_filter, skimage_rescale,
+        return_as=return_as, resize_proportion=resize_proportion
     )
     image_shape = rescaled_coins.shape
     graph = set_graph_data(xp, graph)
@@ -111,6 +114,7 @@ def segmentation(xp, coins, gaussian_filter, return_as, show_plot=False, resize_
         print(title)
         plt.title(title)
         plt.show()
+
     return time_taken, image_shape
 
 
@@ -139,6 +143,7 @@ def run_segmentation_performance():
             resize_proportion=r_proportion
         )
         cupy_times.append(cupy_time)
+
     plot_performance(cupy_times[1:], numpy_times[1:], image_sizes[1:])
 
 
@@ -156,6 +161,7 @@ def plot_performance(cupy_times, numpy_times, image_sizes):
     artifacts_path = 'artifacts'
     if not os.path.exists(artifacts_path):
         os.mkdir(artifacts_path)
+
     plot_path = os.path.join(artifacts_path, 'numpy_vs_cupy.png')
     plt.savefig(plot_path)
 
