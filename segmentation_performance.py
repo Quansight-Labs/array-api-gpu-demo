@@ -171,7 +171,7 @@ def get_perf_times_filename(prefix, platform=None):
     if not platform:
         platform = get_platform()
     platform_ = platform.lower().replace(" ", "_")
-    return f"{prefix}_{platform_}"
+    return f"{prefix}_{platform_}.npy"
 
 
 def save_times(times, filename_prefix):
@@ -200,7 +200,7 @@ def plot_performance(cupy_times, numpy_times, image_sizes, platform=None):
     xi = list(range(len(image_sizes)))
     plt.xticks(xi, image_sizes)
 
-    plt.title(f'Segmentation NumPy vs Cupy on {platform}')
+    plt.title(f'Segmentation: NumPy vs Cupy on {platform}')
     plt.legend()
     plt.ylabel('Time Taken (sec)')
     plt.xlabel('Image Dimension')
