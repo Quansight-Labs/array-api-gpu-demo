@@ -204,8 +204,6 @@ def plot_performance(cupy_times, numpy_times, image_sizes, platform=None):
     plt.ylabel('Time Taken (sec)')
     plt.xlabel('Image Dimension')
 
-    if not os.path.exists(ARTIFACTS_PATH):
-        os.mkdir(ARTIFACTS_PATH)
     plot_filename = f'numpy_vs_cupy_{platform.lower().replace(" ", "_")}.png'
     plot_path = os.path.join(ARTIFACTS_PATH, plot_filename)
     plt.savefig(plot_path)
@@ -246,6 +244,9 @@ def plot_performance_with_slowest_numpy_time():
 @click.option('-s', '--segmentation', 'segmentation', default=True)
 @click.option('-p', '--plot', 'plot', default=False)
 def main(segmentation, plot):
+    # Create artifacts directory if it doesn't exists
+    if not os.path.exists(ARTIFACTS_PATH):
+        os.mkdir(ARTIFACTS_PATH)
     if plot:
         print("Plotting segmentation performance with slowest numpy performance")
         plot_performance_with_slowest_numpy_time()
