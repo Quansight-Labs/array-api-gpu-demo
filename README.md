@@ -3,6 +3,14 @@
 This is a demonstration of the performance benefits of using SciPy, scikit-learn
 and scikit-image on GPUs (AMD or NVIDIA) using Array API.
 
+The changes to SciPy, scikit-learn, scikit-image and CuPy can be seen here:
+
+- [CuPy](https://github.com/cupy/cupy/compare/master...aktech:array-api-gpu-demo?expand=1)
+- [SciPy](https://github.com/scipy/scipy/compare/main...aktech:array-api-gpu-demo?expand=1)
+- [scikit-learn](https://github.com/scikit-learn/scikit-learn/compare/main...aktech:array-api-gpu-demo?expand=1)
+- [scikit-image](https://github.com/scikit-image/scikit-image/compare/main...aktech:array-api-gpu-demo?expand=1)
+
+
 ## Running the demo
 
 First login to Docker Registry
