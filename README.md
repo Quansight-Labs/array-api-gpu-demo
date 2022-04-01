@@ -63,3 +63,33 @@ which would look something like:
 
 #### On AMD GPU
 ![cupy vs numpy](numpy_vs_cupy_amd.png)
+
+
+### Plotting on common numpy performance scale
+
+To get a better idea of the performance of AMD and NVIDIA GPUs, we plot the graph with
+a common numpy performance plot, taking the slowest times from NVIDIA and AMD performance
+data. This can be achieved via following:
+
+- Run the segmentation on both platforms:
+
+```
+docker run --gpus all -p 8788:8788 -v ${PWD}/artifacts:/demo/artifacts ghcr.io/quansight-labs/array-api-gpu-demo-cuda:latest conda run -n demo python segmentation_performance.py
+```
+
+
+```
+docker run -it -p 8788:8788 -v ${PWD}/artifacts:/demo/artifacts --device=/dev/kfd --device=/dev/dri --security-opt seccomp=unconfined --group-add video ghcr.io/quansight-labs/array-api-gpu-demo-rocm:latest bash
+```
+
+
+- Copy the artifacts of the both runs on a common machine. These artifacts can be found in the
+`artifacts/` directory.
+
+- Now run the command for plotting with the given data:
+
+```
+docker run -v ${PWD}/artifacts:/demo/artifacts ghcr.io/quansight-labs/array-api-gpu-demo-cuda:latest conda run -n demo python segmentation_performance.py --plot
+```
+
+- You can find the final plots in the `artifacts/` directory.

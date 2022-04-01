@@ -4,10 +4,15 @@
 import os
 import time
 
+import click
 import tqdm
+
+import numpy as np
 
 import numpy.array_api as npx
 import cupy.array_api as cpx
+
+from enum import Enum
 
 from cupyx.scipy.ndimage import gaussian_filter as cupy_gaussian_filter
 from cupyx.scipy import sparse as cupy_sparse
@@ -41,6 +46,19 @@ LABELLING_METHOD = "discretize"
 N_REGIONS = 25
 
 RESIZE_PROPORTIONS = [0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1]
+
+ARTIFACTS_PATH = 'artifacts'
+
+
+class Platform(Enum):
+    nvidia = 'NVIDIA CUDA'
+    amd = "AMD ROCm"
+
+
+class PerfFilePrefix(Enum):
+    numpy = 'numpy_times'
+    cupy = "cupy_times"
+    shape = "image_shape"
 
 
 def create_image_graph(
@@ -143,11 +161,38 @@ def run_segmentation_performance():
             resize_proportion=r_proportion
         )
         cupy_times.append(cupy_time)
-
+    save_times(numpy_times, PerfFilePrefix.numpy.value)
+    save_times(cupy_times, PerfFilePrefix.cupy.value)
+    save_times(image_sizes, PerfFilePrefix.shape.value)
     plot_performance(cupy_times[1:], numpy_times[1:], image_sizes[1:])
 
 
-def plot_performance(cupy_times, numpy_times, image_sizes):
+def get_perf_times_filename(prefix, platform=None):
+    if not platform:
+        platform = get_platform()
+    platform_ = platform.lower().replace(" ", "_")
+    return f"{prefix}_{platform_}"
+
+
+def save_times(times, filename_prefix):
+    times_array = np.array(times)
+    filename_ = get_perf_times_filename(filename_prefix)
+    filepath = os.path.join(ARTIFACTS_PATH, filename_)
+    with open(filepath, 'wb') as fp:
+        np.save(fp, times_array)
+
+
+def get_platform(platform=None):
+    import cupy_backends
+    if not platform:
+        is_hip = cupy_backends.cuda.api.runtime.is_hip
+        platform = Platform.nvidia.value if not is_hip else Platform.amd.value
+    return platform
+
+
+def plot_performance(cupy_times, numpy_times, image_sizes, platform=None):
+    if not platform:
+        platform = get_platform()
     plt.plot(cupy_times, color="green", label="cupy")
     plt.plot(numpy_times, color="blue", label="numpy")
 
@@ -155,19 +200,63 @@ def plot_performance(cupy_times, numpy_times, image_sizes):
     xi = list(range(len(image_sizes)))
     plt.xticks(xi, image_sizes)
 
-    plt.legend()
+    plt.legend([platform])
     plt.ylabel('Time Taken (sec)')
     plt.xlabel('Image Dimension')
-    artifacts_path = 'artifacts'
-    if not os.path.exists(artifacts_path):
-        os.mkdir(artifacts_path)
 
-    plot_path = os.path.join(artifacts_path, 'numpy_vs_cupy.png')
+    if not os.path.exists(ARTIFACTS_PATH):
+        os.mkdir(ARTIFACTS_PATH)
+    plot_filename = f'numpy_vs_cupy_{platform.lower().replace(" ", "_")}.png'
+    plot_path = os.path.join(ARTIFACTS_PATH, plot_filename)
     plt.savefig(plot_path)
 
 
+def plot_performance_with_slowest_numpy_time():
+    nvidia_numpy = np.load(get_perf_times_filename(
+        PerfFilePrefix.numpy.value, platform=Platform.nvidia.value
+    ))
+    nvidia_cupy = np.load(get_perf_times_filename(
+        PerfFilePrefix.cupy.value, platform=Platform.nvidia.value
+    ))
+
+    amd_numpy = np.load(get_perf_times_filename(
+        PerfFilePrefix.numpy.value, platform=Platform.amd.value
+    ))
+    amd_cupy = np.load(get_perf_times_filename(
+        PerfFilePrefix.cupy.value, platform=Platform.amd.value
+    ))
+
+    # Image sizes are same for both platforms
+    image_sizes = np.load(get_perf_times_filename(
+        PerfFilePrefix.shape.value, platform=Platform.nvidia.value
+    ))
+
+    # Take the slowest numpy time
+    if nvidia_numpy.mean() < amd_numpy.mean():
+        numpy_times = nvidia_numpy
+    else:
+        numpy_times = amd_numpy
+
+    # Plot performance for both on same numpy time
+    plot_performance(nvidia_cupy, numpy_times, image_sizes, Platform.nvidia.value)
+    plot_performance(amd_cupy, numpy_times, image_sizes, Platform.amd.value)
+
+
+@click.command()
+@click.option('-s', '--segmentation', 'segmentation', default=True)
+@click.option('-p', '--plot', 'plot', default=False)
+def main(segmentation, plot):
+    if plot:
+        print("Plotting segmentation performance with slowest numpy performance")
+        plot_performance_with_slowest_numpy_time()
+    elif segmentation:
+        print("Running segmentation performance")
+        t1 = time.time()
+        run_segmentation_performance()
+        print(f"Total Time Taken: {time.time() - t1} sec")
+    else:
+        print("No flags provided, doing nothing")
+
+
 if __name__ == '__main__':
-    print("Running segmentation performance")
-    t1 = time.time()
-    run_segmentation_performance()
-    print(f"Total Time Taken: {time.time() - t1} sec")
+    main()

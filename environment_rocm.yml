@@ -59,3 +59,4 @@ dependencies:
   - setuptools=59.2.0
   - tifffile
   - tqdm
+  - click
