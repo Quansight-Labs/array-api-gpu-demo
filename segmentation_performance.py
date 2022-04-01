@@ -200,7 +200,8 @@ def plot_performance(cupy_times, numpy_times, image_sizes, platform=None):
     xi = list(range(len(image_sizes)))
     plt.xticks(xi, image_sizes)
 
-    plt.legend([platform])
+    plt.title(f'Segmentation NumPy vs Cupy on {platform}')
+    plt.legend()
     plt.ylabel('Time Taken (sec)')
     plt.xlabel('Image Dimension')
 
